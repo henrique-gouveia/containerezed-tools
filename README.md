@@ -1,3 +1,6 @@
 # Containerized Tools
 
-This branch contains tools configured by using docker-compose.
+This project contains tools I use daily configured by using:
+
+* docker-compose
+* podman-compose
