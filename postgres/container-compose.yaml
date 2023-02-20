@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: "123mudar"
+    # user: root
+    # user: "${UID:?You must do 'export UID' to launch}:${GID:?You must do 'export GID' to launch}"
+    volumes:
+      # - ./data:/var/lib/postgresql/data
+      # - ./data/config:/etc/postgresql
+      - nfspgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - psql_nt
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@psql.com"
+      PGADMIN_DEFAULT_PASSWORD: "123mudar"
+    volumes:
+      - nfspgadmin:/var/lib/pgadmin
+    ports:
+      - "6543:80"
+    depends_on:
+      - db
+    networks:
+      - psql_nt
+
+volumes:
+  nfspgdata:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw
+      device: ":/Users/${whoami}/containerised-tools/postgres/data/pgdata"
+
+  nfspgadmin:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw
+      device: ":/Users/${whoami}/containerised-tools/postgres/data/pgadmin"
+
+networks:
+  psql_nt:
+    name: psql_nt
+    driver: bridge
