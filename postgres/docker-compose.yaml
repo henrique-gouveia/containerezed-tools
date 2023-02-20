@@ -1,0 +1,34 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:12
+    environment:
+      # POSTGRES_DB: sample
+      # POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123mudar"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      # - ./scripts:/scripts
+      # - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks: 
+      - psql_nt
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: "admin@psql.com"
+      PGADMIN_DEFAULT_PASSWORD: "123mudar"
+    ports: 
+      - "6543:80"
+    depends_on: 
+      - db
+    networks: 
+      - psql_nt
+
+networks: 
+  psql_nt:
+    name: psql_nt
+    driver: bridge
