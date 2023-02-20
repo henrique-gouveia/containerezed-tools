@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    tty: true
+    ports:
+      - "5672:5672"
+      - "8181:15672"
+
