@@ -1,0 +1,20 @@
+
+version: '3.8'
+
+services:
+  cache:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - nfsrediscache:/data
+
+volumes:
+  nfsrediscache:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw
+      device: ":/Users/${whoami}/containerised-tools/redis/data"
