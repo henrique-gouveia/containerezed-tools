@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    environment:
+      # MONGO_INITDB_ROOT_USERNAME: admin
+      # MONGO_INITDB_ROOT_PASSWORD: 123mudar
+      - PUID=1000
+      - PGID=1000
+    volumes: 
+      - nfsmongodbdata:/data/db
+    ports: 
+      - 27017:27017
+
+volumes:
+  nfsmongodbdata:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw
+      device: ":/Users/${whoami}/containerised-tools/mongodb/data"
